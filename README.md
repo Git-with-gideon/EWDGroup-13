@@ -29,7 +29,10 @@ This is an enterprise-level fullstack application designed to process MoMo (Mobi
 
 ## Architecture Diagram
 
-**System Architecture:** [ARCHITECTURE_DIAGRAM_LINK] -> will upload when push to avoid resizing issues.
+**System Architecture:** 
+
+<img width="2782" height="5499" alt="EWDgroup" src="https://github.com/user-attachments/assets/b7571798-4290-48be-b478-b8a79247c84a" />
+
 
 _Note: The architecture diagram will be created using Draw.io and linked here. It will illustrate the main system components, data flow, and interactions between the ETL pipeline, database, API, and frontend._
 
