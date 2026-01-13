@@ -7,6 +7,7 @@
 **Team Members:**
 
 - Okechukwu Wisdom Ikechukwu
+- Erioluwa Gideon Olowoyo
 - Cyuzuzo Germain
 - Igor Ntwali
 - Bior Majok
