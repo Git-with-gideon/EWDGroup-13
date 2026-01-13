@@ -2,7 +2,7 @@
 
 ## Team Information
 
-**Team Name:** [TEAM_NAME]
+**Team Name:** EWDGroup-13
 
 **Team Members:**
 - Okechukwu Wisdom Ikechukwu
