@@ -1,5 +1,8 @@
 # MoMo SMS Data Processing Application
 
+![Status](https://img.shields.io/badge/Status-in%20development-yellow.svg)
+![Version](https://img.shields.io/badge/Assignment_Version-1.0-blue)
+![Due](https://img.shields.io/badge/Current_Due_Date-13th_of_January,2026-8A2BE2)
 ## Team Information
 
 **Team Name:** EWDGroup-13
