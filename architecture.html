@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoMo SMS Data Processing - System Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 60px 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 50px;
+            font-size: 2.2em;
+        }
+
+        .architecture-wrapper {
+            position: relative;
+            padding-bottom: 120px;
+        }
+
+        .main-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .box {
+            background: white;
+            border: 3px solid #4a90e2;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .box-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .box-subtitle {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        /* Input Box - Left */
+        .input-box {
+            border-color: #3498db;
+            background: #ebf5fb;
+        }
+
+        /* ETL Pipeline Box - Center (Large) */
+        .etl-box {
+            border-color: #f39c12;
+            background: #fef5e7;
+            min-width: 280px;
+            padding: 30px;
+        }
+
+        .etl-steps {
+            list-style: none;
+            text-align: left;
+            margin-top: 20px;
+            padding-left: 0;
+        }
+
+        .etl-steps li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f39c12;
+            color: #d68910;
+            font-weight: 500;
+        }
+
+        .etl-steps li:last-child {
+            border-bottom: none;
+        }
+
+        /* Storage Boxes */
+        .storage-box {
+            border-color: #27ae60;
+            background: #eafaf1;
+        }
+
+        .output-box {
+            border-color: #9b59b6;
+            background: #f4ecf7;
+        }
+
+        /* Arrows - Horizontal */
+        .arrow {
+            width: 50px;
+            height: 4px;
+            background: #34495e;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .arrow::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: -6px;
+            width: 0;
+            height: 0;
+            border-left: 12px solid #34495e;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+
+        /* Right side - two outputs side by side */
+        .outputs-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        /* Logs Box - Optional below ETL */
+        .logs-box {
+            border-color: #95a5a6;
+            background: #ecf0f1;
+            border-style: dashed;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 250px;
+        }
+
+        .logs-box .box-title::after {
+            content: " (Optional)";
+            font-size: 0.7em;
+            color: #7f8c8d;
+            font-weight: normal;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-flow {
+                flex-direction: column;
+            }
+
+            .arrow {
+                width: 4px;
+                height: 50px;
+                transform: rotate(90deg);
+            }
+
+            .arrow::after {
+                right: -6px;
+                top: -8px;
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-top: 12px solid #34495e;
+                border-left-width: 8px;
+            }
+
+            .logs-box {
+                position: relative;
+                bottom: auto;
+                left: auto;
+                transform: none;
+                margin-top: 20px;
+            }
+
+            .outputs-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MoMo SMS Data Processing System Architecture</h1>
+        
+        <div class="architecture-wrapper">
+            <div class="main-flow">
+                <!-- Left: Input -->
+                <div class="box input-box">
+                    <div class="box-title">MoMo SMS XML Files</div>
+                    <div class="box-subtitle">data/raw/momo.xml</div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="arrow"></div>
+
+                <!-- Center: ETL Pipeline -->
+                <div class="box etl-box">
+                    <div class="box-title">ETL Pipeline (Python)</div>
+                    <ul class="etl-steps">
+                        <li>Parse XML</li>
+                        <li>Clean & Normalize</li>
+                        <li>Categorize Transactions</li>
+                        <li>Load Data</li>
+                    </ul>
+                </div>
+
+                <!-- Arrow -->
+                <div class="arrow"></div>
+
+                <!-- Right: Two outputs side by side -->
+                <div class="outputs-row">
+                    <div class="box storage-box">
+                        <div class="box-title">SQLite Database</div>
+                        <div class="box-subtitle">data/db.sqlite3</div>
+                    </div>
+
+                    <div class="box output-box">
+                        <div class="box-title">Processed JSON</div>
+                        <div class="box-subtitle">data/processed/dashboard.json</div>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="arrow"></div>
+
+                <!-- Far Right: Web Dashboard -->
+                <div class="box output-box">
+                    <div class="box-title">Web Dashboard</div>
+                    <div class="box-subtitle">HTML, CSS, JavaScript</div>
+                </div>
+            </div>
+
+            <!-- Optional: Logs below ETL -->
+            <div class="box logs-box">
+                <div class="box-title">Logs & Dead Letters</div>
+                <div class="box-subtitle">data/logs/</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
