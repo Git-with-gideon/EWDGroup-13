@@ -24,6 +24,8 @@ CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     phone_number VARCHAR(15) NOT NULL UNIQUE,
     full_name VARCHAR(100) NOT NULL,
+    id_number VARCHAR(50) NULL COMMENT 'National ID for KYC',
+    date_of_birth DATE NULL COMMENT 'DOB for KYC verification',
     user_type ENUM('individual', 'business', 'agent') NOT NULL DEFAULT 'individual',
     current_balance DECIMAL(15,2) DEFAULT 0.00,
     is_deleted BOOLEAN DEFAULT FALSE,
@@ -31,7 +33,8 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL,
 
-    CONSTRAINT chk_phone_format CHECK (phone_number REGEXP '^250[0-9]{9}$')
+    CONSTRAINT chk_phone_format CHECK (phone_number REGEXP '^250[0-9]{9}$'),
+    CONSTRAINT unique_id_number UNIQUE (id_number)
 );
 
 CREATE INDEX idx_users_phone ON users(phone_number);
@@ -39,7 +42,7 @@ CREATE INDEX idx_users_type ON users(user_type);
 
 -- ============================================
 -- TABLE: transaction_categories
--- The 9 types of MoMo transactions
+-- The types of MoMo transactions
 -- ============================================
 
 CREATE TABLE transaction_categories (
@@ -66,6 +69,7 @@ CREATE TABLE transactions (
     category_id INT NOT NULL,
     amount DECIMAL(15,2) NOT NULL,
     fee DECIMAL(15,2) DEFAULT 0.00,
+    currency VARCHAR(10) NOT NULL DEFAULT 'RWF',
     transaction_date DATETIME NOT NULL,
     raw_sms TEXT NULL,
     status ENUM('pending', 'completed', 'failed', 'reversed') NOT NULL DEFAULT 'completed',
@@ -142,6 +146,7 @@ CREATE TABLE transaction_tags (
 -- ============================================
 -- TABLE: system_logs
 -- Logs from processing the XML
+-- Also stores failed SMS in raw_content
 -- ============================================
 
 CREATE TABLE system_logs (
@@ -150,10 +155,13 @@ CREATE TABLE system_logs (
     log_level ENUM('info', 'warning', 'error', 'critical') NOT NULL,
     action VARCHAR(100) NOT NULL,
     details TEXT NULL,
+    raw_content TEXT NULL COMMENT 'Stores raw SMS that failed to parse (dead letter)',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id) ON DELETE SET NULL
 );
+
+CREATE INDEX idx_logs_level ON system_logs(log_level);
 
 -- ============================================
 -- INSERT SAMPLE DATA
@@ -167,12 +175,27 @@ INSERT INTO transaction_categories (category_name, category_code, direction, des
 ('Payment to Code', 'PAYMENT', 'outbound', 'Payment using merchant code'),
 ('Airtime Purchase', 'AIRTIME', 'outbound', 'Airtime top-up');
 
--- Sample user
-INSERT INTO users (phone_number, full_name, user_type) VALUES
-('250788123456', 'Test User', 'individual');
+-- Sample users with KYC
+INSERT INTO users (phone_number, full_name, id_number, date_of_birth, user_type, current_balance) VALUES
+('250788123456', 'Jean Pierre Habimana', '1199880012345678', '1988-05-15', 'individual', 52000.00),
+('250788111222', 'Marie Claire Uwase', '1199285012345678', '1992-08-20', 'individual', 35000.00),
+('250788333444', 'Emmanuel Ndayisaba', NULL, NULL, 'business', 120000.00);
 
 -- Sample tags
 INSERT INTO tags (tag_name, color_code) VALUES
 ('Personal', '#3498db'),
 ('Business', '#2ecc71'),
 ('Urgent', '#e74c3c');
+
+-- Sample transaction
+INSERT INTO transactions (transaction_ref, category_id, amount, fee, currency, transaction_date, raw_sms) VALUES
+('12345678901', 4, 5000.00, 0.00, 'RWF', '2025-01-15 10:30:00', 'TxId:12345678901*Payment of 5,000 RWF to SHOP123*Balance:52,000 RWF');
+
+-- Sample user_transaction
+INSERT INTO user_transactions (user_id, transaction_id, role, balance_snapshot) VALUES
+(1, 1, 'sender', 52000.00);
+
+-- Sample logs (including a failed SMS in dead letter)
+INSERT INTO system_logs (transaction_id, log_level, action, details, raw_content) VALUES
+(1, 'info', 'SMS_PARSED', 'Successfully parsed payment transaction', NULL),
+(NULL, 'error', 'PARSE_FAILED', 'Could not extract transaction data', 'Invalid SMS content that could not be parsed - missing transaction ID');
