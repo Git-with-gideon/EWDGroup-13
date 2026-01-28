@@ -131,4 +131,44 @@
           "transaction_count": 0,
           "total_amount": 0
         },
+        {
+          "category_name": "Cash Withdrawal",
+          "direction": "outbound",
+          "transaction_count": 0,
+          "total_amount": 0
+        },
+        {
+          "category_name": "Utility Payment",
+          "direction": "outbound",
+          "transaction_count": 0,
+          "total_amount": 0
         }
+      ]
+    },
+    "query3_table_counts": {
+      "description": "Count records in each table",
+      "results": [
+        {
+          "table_name": "users",
+          "records": 1
+        },
+        {
+          "table_name": "transactions",
+          "records": 714
+        },
+        {
+          "table_name": "transaction_categories",
+          "records": 9
+        },
+        {
+          "table_name": "tags",
+          "records": 5
+        },
+        {
+          "table_name": "system_logs",
+          "records": 2
+        }
+      ]
+    }
+  }
+}
