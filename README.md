@@ -18,6 +18,8 @@
 
 This is an enterprise-level fullstack application designed to process MoMo (Mobile Money) SMS transaction data in XML format. The system performs comprehensive data processing including parsing, cleaning, normalization, categorization, and storage in a relational database. The application provides a frontend dashboard interface for analyzing and visualizing transaction data, enabling insights into mobile money usage patterns, transaction types, and financial trends.
 
+Task Sheets for Week 2 Database Design and Implementation: https://docs.google.com/spreadsheets/d/1rCpYeL-neYF9pLjIJMFF84ge2ypylhV_DcXbMgolmWc/edit?usp=sharing
+
 ### Key Features
 
 - **XML Data Processing**: Parse and extract transaction data from MoMo SMS XML files
