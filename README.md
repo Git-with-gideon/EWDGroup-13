@@ -13,9 +13,6 @@
 - Erioluwa Gideon Olowoyo
 - Cyuzuzo Germain
 - Igor Ntwali
-- Bior Majok
-- Dianah Gasasira Shimwa
-- kellen Ashley Mutoni
 
 ## Project Description
 
