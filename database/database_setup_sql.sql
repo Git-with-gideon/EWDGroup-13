@@ -109,4 +109,70 @@ CREATE INDEX idx_user_trans_trans ON user_transactions(transaction_id);
 -- ============================================
 -- TABLE: tags
 -- Labels for transactions
--
+-- ============================================
+
+CREATE TABLE tags (
+    tag_id INT AUTO_INCREMENT PRIMARY KEY,
+    tag_name VARCHAR(50) NOT NULL UNIQUE,
+    color_code VARCHAR(10) NULL,
+    is_deleted BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL
+);
+
+-- ============================================
+-- TABLE: transaction_tags (Junction Table)
+-- Links transactions to tags (many-to-many)
+-- ============================================
+
+CREATE TABLE transaction_tags (
+    transaction_tag_id INT AUTO_INCREMENT PRIMARY KEY,
+    transaction_id INT NOT NULL,
+    tag_id INT NOT NULL,
+    added_by VARCHAR(50) NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE KEY unique_transaction_tag (transaction_id, tag_id),
+
+    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tags(tag_id)
+);
+
+-- ============================================
+-- TABLE: system_logs
+-- Logs from processing the XML
+-- ============================================
+
+CREATE TABLE system_logs (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    transaction_id INT NULL,
+    log_level ENUM('info', 'warning', 'error', 'critical') NOT NULL,
+    action VARCHAR(100) NOT NULL,
+    details TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id) ON DELETE SET NULL
+);
+
+-- ============================================
+-- INSERT SAMPLE DATA
+-- ============================================
+
+-- Sample categories
+INSERT INTO transaction_categories (category_name, category_code, direction, description) VALUES
+('Incoming Transfer', 'INCOMING', 'inbound', 'Money received from another user'),
+('P2P Transfer', 'P2P', 'outbound', 'Person to person transfer'),
+('Cash Withdrawal', 'WITHDRAW', 'outbound', 'Cash withdrawal from agent'),
+('Payment to Code', 'PAYMENT', 'outbound', 'Payment using merchant code'),
+('Airtime Purchase', 'AIRTIME', 'outbound', 'Airtime top-up');
+
+-- Sample user
+INSERT INTO users (phone_number, full_name, user_type) VALUES
+('250788123456', 'Test User', 'individual');
+
+-- Sample tags
+INSERT INTO tags (tag_name, color_code) VALUES
+('Personal', '#3498db'),
+('Business', '#2ecc71'),
+('Urgent', '#e74c3c');
