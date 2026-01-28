@@ -1,0 +1,134 @@
+{
+  "description": "JSON examples for MoMo SMS Database - EWDGroup-13",
+  "query_results": {
+    "query1_view_all_transactions": {
+      "description": "View all transactions with category name",
+      "results": [
+        {
+          "transaction_id": 714,
+          "transaction_ref": "37832903831",
+          "amount": 24900.0,
+          "fee": 0.0,
+          "transaction_date": "2025-01-16 00:13:22",
+          "category_name": "Payment to Code"
+        },
+        {
+          "transaction_id": 713,
+          "transaction_ref": "51350491173",
+          "amount": 1500.0,
+          "fee": 0.0,
+          "transaction_date": "2025-01-15 20:34:58",
+          "category_name": "Payment to Code"
+        },
+        {
+          "transaction_id": 712,
+          "transaction_ref": "26811810649",
+          "amount": 27000.0,
+          "fee": 0.0,
+          "transaction_date": "2025-01-15 20:26:12",
+          "category_name": "Payment to Code"
+        },
+        {
+          "transaction_id": 711,
+          "transaction_ref": "55109401801",
+          "amount": 14500.0,
+          "fee": 0.0,
+          "transaction_date": "2025-01-14 21:25:51",
+          "category_name": "Payment to Code"
+        },
+        {
+          "transaction_id": 710,
+          "transaction_ref": "30801532894",
+          "amount": 1000.0,
+          "fee": 0.0,
+          "transaction_date": "2025-01-14 20:08:44",
+          "category_name": "Payment to Code"
+        },
+        {
+          "transaction_id": 709,
+          "transaction_ref": "36439238929",
+          "amount": 3800.0,
+          "fee": 0.0,
+          "transaction_date": "2025-01-14 13:02:52",
+          "category_name": "Payment to Code"
+        },
+        {
+          "transaction_id": 708,
+          "transaction_ref": "33961366964",
+          "amount": 35300.0,
+          "fee": 0.0,
+          "transaction_date": "2025-01-13 20:22:16",
+          "category_name": "Payment to Code"
+        },
+        {
+          "transaction_id": 707,
+          "transaction_ref": "88289015616",
+          "amount": 177.0,
+          "fee": 0.0,
+          "transaction_date": "2025-01-13 14:40:42",
+          "category_name": "Incoming Transfer"
+        },
+        {
+          "transaction_id": 706,
+          "transaction_ref": "31581671113",
+          "amount": 10000.0,
+          "fee": 0.0,
+          "transaction_date": "2025-01-13 14:22:39",
+          "category_name": "Payment to Code"
+        },
+        {
+          "transaction_id": 705,
+          "transaction_ref": "52225700417",
+          "amount": 31000.0,
+          "fee": 0.0,
+          "transaction_date": "2025-01-12 18:29:48",
+          "category_name": "Payment to Code"
+        }
+      ]
+    },
+    "query2_count_by_category": {
+      "description": "Count transactions by category",
+      "results": [
+        {
+          "category_name": "Payment to Code",
+          "direction": "outbound",
+          "transaction_count": 660,
+          "total_amount": 4811892.0
+        },
+        {
+          "category_name": "Incoming Transfer",
+          "direction": "inbound",
+          "transaction_count": 38,
+          "total_amount": 15753.0
+        },
+        {
+          "category_name": "Third Party Debit",
+          "direction": "outbound",
+          "transaction_count": 9,
+          "total_amount": 4000.0
+        },
+        {
+          "category_name": "Bundle Purchase",
+          "direction": "outbound",
+          "transaction_count": 6,
+          "total_amount": 2400.0
+        },
+        {
+          "category_name": "Airtime Purchase",
+          "direction": "outbound",
+          "transaction_count": 1,
+          "total_amount": 200.0
+        },
+        {
+          "category_name": "P2P Transfer",
+          "direction": "outbound",
+          "transaction_count": 0,
+          "total_amount": 0
+        },
+        {
+          "category_name": "Bank Deposit",
+          "direction": "inbound",
+          "transaction_count": 0,
+          "total_amount": 0
+        },
+        }
