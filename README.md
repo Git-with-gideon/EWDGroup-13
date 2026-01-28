@@ -74,3 +74,73 @@ _Note: The Scrum board is set up using Trello with columns for To Do, In Progres
 │   ├── db.py                         # SQLite connection helpers and database utilities
 │   └── schemas.py                    # Pydanti
 ```
+
+readme## Database Design (Week 2)
+
+### Overview
+
+We designed a MySQL database to store MoMo SMS transaction data. The database has 6 main tables that work together to organize the data.
+
+### Tables
+
+| Table                    | What it stores                   |
+| ------------------------ | -------------------------------- |
+| `users`                  | People who send or receive money |
+| `transactions`           | The actual transaction records   |
+| `transaction_categories` | 9 types of transactions we found |
+| `system_logs`            | Logs from processing the XML     |
+| `tags`                   | Labels for transactions          |
+| `transaction_tags`       | Links transactions to tags (M:N) |
+
+### Transaction Categories
+
+We analyzed the XML and found 9 types of transactions:
+
+| Name              | Direction | How we detect it         |
+| ----------------- | --------- | ------------------------ |
+| Incoming Transfer | CREDIT    | "You have received"      |
+| P2P Transfer      | DEBIT     | "*165*S\*"               |
+| Bank Deposit      | CREDIT    | "*113*R\*A bank deposit" |
+| Cash Withdrawal   | DEBIT     | "withdrawn"              |
+| Payment to Code   | DEBIT     | "TxId:"                  |
+| Airtime Purchase  | DEBIT     | "to Airtime"             |
+| Bundle Purchase   | DEBIT     | "to Bundles and Packs"   |
+| Utility Payment   | DEBIT     | "to MTN Cash Power"      |
+| Third Party       | DEBIT     | "*164*S\*"               |
+
+### How to Set Up
+
+1. Make sure MySQL is installed
+2. Run the setup script:
+
+```bash
+mysql -u root -p < database/database_setup.sql
+```
+
+3. Check it worked:
+
+```sql
+USE momo_sms_db;
+SHOW TABLES;
+```
+
+### Sample Queries
+
+Get all transactions with details:
+
+```sql
+SELECT * FROM v_transaction_summary LIMIT 10;
+```
+
+Get daily statistics:
+
+```sql
+SELECT * FROM v_daily_stats;
+```
+
+### Documentation Files
+
+- [docs/erd_diagram.md](docs/erd_diagram.md) - ERD with diagram
+- [docs/data_dictionary.md](docs/data_dictionary.md) - Table descriptions
+- [examples/json_schemas.json](examples/json_schemas.json) - JSON examples
+- [examples/sql_json_mapping.md](examples/sql_json_mapping.md) - SQL to JSON mapping
