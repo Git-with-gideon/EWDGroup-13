@@ -13,6 +13,7 @@
 - Erioluwa Gideon Olowoyo
 - Cyuzuzo Germain
 - Igor Ntwali
+- Kellen Ashley Mutoni
 
 ## Project Description
 
