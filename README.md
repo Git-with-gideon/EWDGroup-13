@@ -51,9 +51,16 @@ _Note: The Scrum board is set up using Trello with columns for To Do, In Progres
 ```
 .
 ├── README.md                         # Project documentation and setup guide
+├── architecture.html                 # System architecture diagram
 ├── .env.example                      # Environment variables template (DATABASE_URL or SQLite path)
 ├── requirements.txt                  # Python dependencies (lxml/ElementTree, dateutil, FastAPI optional)
 ├── index.html                        # Dashboard entry point (static HTML)
+├── docs/
+│   └── erd_diagram.png               # Entity Relationship Diagram
+├── database/
+│   └── database_setup_sql.sql        # MySQL database setup script
+├── examples/
+│   └── json_schemas.json             # JSON schema examples
 ├── web/
 │   ├── styles.css                    # Dashboard styling and CSS
 │   ├── chart_handler.js              # JavaScript for fetching and rendering charts/tables
@@ -79,5 +86,7 @@ _Note: The Scrum board is set up using Trello with columns for To Do, In Progres
 │   ├── __init__.py                   # Python package initialization
 │   ├── app.py                        # Minimal FastAPI application with /transactions, /analytics endpoints
 │   ├── db.py                         # SQLite connection helpers and database utilities
-│   └── schemas.py                    # Pydanti
+│   └── schemas.py                    # Pydantic models
+├── scripts/                          # Utility scripts
+└── tests/                            # Test files
 ```
