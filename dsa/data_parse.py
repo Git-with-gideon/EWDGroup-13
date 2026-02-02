@@ -43,3 +43,23 @@ def parse_sms_to_json(file_path):
             formatted_date = dt_obj.strftime('%Y-%m-%d %H:%M:%S')
         except:
             formatted_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        # Determine Category ID based on keywords
+        category_id = 1  # Default to 'Incoming'
+        if "payment of" in body.lower(): category_id = 4
+        elif "transferred to" in body.lower(): category_id = 2
+        elif "bank deposit" in body.lower(): category_id = 1
+        elif "airtime" in body.lower(): category_id = 5
+
+        transactions.append({
+            "transaction_ref": ref,
+            "category_id": category_id,
+            "amount": amount,
+            "fee": fee,
+            "currency": "RWF",
+            "transaction_date": formatted_date,
+            "raw_sms": body
+        })
+    
+    return transactions
+
