@@ -93,3 +93,15 @@ def insert_into_db(transactions):
         if 'conn' in locals() and conn.is_connected():
             cursor.close()
             conn.close()
+
+# Main Execution
+if __name__ == "__main__":
+    # Task 1: Data Parsing to JSON
+    json_data = parse_sms_to_json(XML_FILE)
+    
+    # Optional: Save JSON to file
+    with open('parsed_transactions.json', 'w') as f:
+        json.dump(json_data, f, indent=4)
+    
+    # Task 2: Add to Database
+    insert_into_db(json_data)
