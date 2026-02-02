@@ -21,6 +21,8 @@ This is an enterprise-level fullstack application designed to process MoMo (Mobi
 
 Task Sheets for Week 2 Database Design and Implementation: https://docs.google.com/spreadsheets/d/1rCpYeL-neYF9pLjIJMFF84ge2ypylhV_DcXbMgolmWc/edit?usp=sharing
 
+Task Sheets for Building and Securing the REST API: https://docs.google.com/spreadsheets/d/1M_vmswK8btt72Yz7fxbQSUbU3D80fuD3k_snTog9Qks/edit?usp=sharing
+
 ### Key Features
 
 - **XML Data Processing**: Parse and extract transaction data from MoMo SMS XML files
