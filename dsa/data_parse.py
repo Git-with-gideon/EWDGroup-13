@@ -63,3 +63,33 @@ def parse_sms_to_json(file_path):
     
     return transactions
 
+def insert_into_db(transactions):
+    """Connects to MySQL and inserts transaction data."""
+    try:
+        conn = mysql.connector.connect(**DB_CONFIG)
+        cursor = conn.cursor()
+
+        sql = """
+        INSERT INTO transactions 
+        (transaction_ref, category_id, amount, fee, currency, transaction_date, raw_sms)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        ON DUPLICATE KEY UPDATE updated_at = CURRENT_TIMESTAMP
+        """
+
+        data_to_insert = [
+            (t['transaction_ref'], t['category_id'], t['amount'], 
+             t['fee'], t['currency'], t['transaction_date'], t['raw_sms'])
+            for t in transactions if t['transaction_ref'] != "UNKNOWN"
+        ]
+
+        cursor.executemany(sql, data_to_insert)
+        conn.commit()
+        
+        print(f"Successfully inserted/updated {cursor.rowcount} records.")
+        
+    except mysql.connector.Error as err:
+        print(f"Database Error: {err}")
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            cursor.close()
+            conn.close()
