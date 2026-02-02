@@ -93,13 +93,13 @@ _Note: The Scrum board is set up using Trello with columns for To Do, In Progres
 └── tests/                            # Test files
 ```
 
- MoMo SMS Transaction API
+ ### MoMo SMS Transaction API
 
 A RESTful API built with Python (Flask) that parses Mobile Money (MoMo) SMS data from an XML file, stores it in a MySQL database, and exposes secure CRUD endpoints for managing transactions.
 
 This system is designed for financial data extraction, storage, and analytics — making it ideal for fintech experiments, reconciliation systems, and transaction dashboards.
 
- Features
+ ### Features
 
 SMS Data Parsing
 Automatically extracts:
@@ -125,7 +125,7 @@ Records are marked as deleted instead of being permanently removed.
 Performance Testing (DSA)
 Includes a script comparing Linear Search vs Dictionary Lookup.
 
- Prerequisites
+ ### Prerequisites
 
 Python 3.8+
 
@@ -208,7 +208,7 @@ curl -X PUT http://127.0.0.1:5000/transactions/1 \
 curl -X DELETE http://127.0.0.1:5000/transactions/1 \
      -u admin:momo_secure_2025
 
- DSA Performance Comparison
+ ### DSA Performance Comparison
 
 This project includes a script that compares:
 
