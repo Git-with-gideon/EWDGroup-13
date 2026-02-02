@@ -7,7 +7,7 @@ from datetime import datetime
 # 1. Configuration & Constants
 XML_FILE = 'modified_sms_v2.xml'
 DB_CONFIG = {
-    'host': 'localhost ',
+    'host': 'localhost',
     'user': 'root',
     'password': 'Philosophy@360',
     'database': 'momo_sms_db'
@@ -35,10 +35,10 @@ def parse_sms_to_json(file_path):
         fee_match = re.search(r'Fee was\s*(?::)?\s*(\d+)', body)
         fee = float(fee_match.group(1)) if fee_match else 0.0
 
-        # Date formatting (converting XML date to SQL format)
+        # Date formatting (converting XML date to SQL format commands)
         raw_date = sms.get('readable_date', '')
         try:
-            # Format: "10 May 2024 4:30:58 PM" -> "2024-05-10 16:30:58"
+            # Format:"10 May 2024 4:30:58 PM" -> "2024-05-10 16:30:58"
             dt_obj = datetime.strptime(raw_date, '%d %b %y %I:%M:%S %p')
             formatted_date = dt_obj.strftime('%Y-%m-%d %H:%M:%S')
         except:
