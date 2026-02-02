@@ -93,85 +93,129 @@ _Note: The Scrum board is set up using Trello with columns for To Do, In Progres
 └── tests/                            # Test files
 ```
 
-MoMo SMS Transaction API
-This project is a RESTful API built with Python Flask that parses Mobile Money (MoMo) SMS data from an XML file, stores it in a MySQL database, and provides secure CRUD (Create, Read, Update, Delete) endpoints.
+ MoMo SMS Transaction API
 
-Features
-Data Parsing: Automatically extracts Transaction IDs, Amounts, Fees, and Dates from modified_sms_v2.xml.
+A RESTful API built with Python (Flask) that parses Mobile Money (MoMo) SMS data from an XML file, stores it in a MySQL database, and exposes secure CRUD endpoints for managing transactions.
 
-Database Integration: Full persistence using MySQL.
+This system is designed for financial data extraction, storage, and analytics — making it ideal for fintech experiments, reconciliation systems, and transaction dashboards.
 
-Security: All endpoints are protected with Basic Authentication.
+ Features
 
-Soft Deletion: Records are marked as deleted rather than removed from the database.
+SMS Data Parsing
+Automatically extracts:
 
-Prerequisites
+Transaction Reference
+
+Amount
+
+Fee
+
+Date
+from modified_sms_v2.xml
+
+Database Persistence
+All transactions are stored in MySQL.
+
+Secure API
+All endpoints are protected with Basic Authentication.
+
+Soft Deletion
+Records are marked as deleted instead of being permanently removed.
+
+Performance Testing (DSA)
+Includes a script comparing Linear Search vs Dictionary Lookup.
+
+ Prerequisites
+
 Python 3.8+
 
 MySQL Server
 
 pip (Python package manager)
 
-Installation & Setup
-1. Clone and Prepare Environment
-Bash
-# Install required libraries
+ Installation & Setup
+1️⃣ Install Dependencies
 pip install Flask Flask-HTTPAuth mysql-connector-python werkzeug
-2. Database Setup
-Log into your MySQL instance.
 
-Run the provided SQL setup script to create the momo_sms_db and necessary tables.
+2️⃣ Database Setup
 
-Update the DB_CONFIG dictionary in the Python script with your MySQL credentials:
+Log in to MySQL
 
-Python
+Run the provided SQL script to create:
+
+Database: momo_sms_db
+
+Required tables
+
+Update database credentials in your Python file:
+
 DB_CONFIG = {
     'host': 'localhost',
     'user': 'your_root_user',
     'password': 'your_password',
     'database': 'momo_sms_db'
 }
-3. Parse XML & Seed Database
-Run the parsing script once to populate your database with the transactions from the XML file:
 
-Bash
+3️⃣ Parse XML & Seed Database
+
+Load transactions from the XML file into MySQL:
+
 python parse_to_db.py
-4. Run the API
-Bash
+
+4️⃣ Run the API Server
 python app.py
-The server will start at http://127.0.0.1:5000
 
-Authentication
-The API uses Basic Authentication. You must provide these credentials in the header of every request:
 
-Username: admin
+The server will start at:
 
-Password: momo_secure_2025
+http://127.0.0.1:5000
 
-If credentials are missing or incorrect, the API returns a 401 Unauthorized error.
+ Authentication
 
-API Endpoints & Testing
-Get All Transactions
-Bash
+All endpoints require Basic Authentication.
+
+Field	Value
+Username	admin
+Password	momo_secure_2025
+
+If authentication fails, the API returns:
+
+401 Unauthorized
+
+ API Endpoints
+🔹 Get All Transactions
 curl -u admin:momo_secure_2025 http://127.0.0.1:5000/transactions
-Add a New Transaction
-Bash
+
+🔹 Add a New Transaction
 curl -X POST http://127.0.0.1:5000/transactions \
      -u admin:momo_secure_2025 \
      -H "Content-Type: application/json" \
-     -d '{"transaction_ref": "12345", "category_id": 1, "amount": 5000, "fee": 50, "raw_sms": "Sample SMS"}'
-Update a Transaction
-Bash
+     -d '{
+           "transaction_ref": "12345",
+           "category_id": 1,
+           "amount": 5000,
+           "fee": 50,
+           "raw_sms": "Sample SMS"
+         }'
+
+🔹 Update a Transaction
 curl -X PUT http://127.0.0.1:5000/transactions/1 \
      -u admin:momo_secure_2025 \
      -H "Content-Type: application/json" \
      -d '{"amount": 7500}'
-Delete a Transaction (Soft Delete)
-Bash
+
+🔹 Delete a Transaction (Soft Delete)
 curl -X DELETE http://127.0.0.1:5000/transactions/1 \
      -u admin:momo_secure_2025
-DSA Comparison
-The project includes a performance test script comparing Linear Search vs. Dictionary Lookup. To see the results, run:
 
-Bash
+ DSA Performance Comparison
+
+This project includes a script that compares:
+
+Linear Search
+
+Dictionary Lookup
+
+To run the test:
+
 python dsa_test.py
