@@ -69,3 +69,93 @@ def get_transaction(t_id):
     if transaction:
         return jsonify(transaction), 200
     return jsonify({"error": "Transaction not found"}), 404
+
+# 3. POST /transactions -> Add a new transaction
+@app.route('/transactions', methods=['POST'])
+@auth.login_required
+def add_transaction():
+    data = request.get_json()
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    sql = """INSERT INTO transactions 
+             (transaction_ref, category_id, amount, fee, transaction_date, raw_sms) 
+             VALUES (%s, %s, %s, %s, %s, %s)"""
+    
+    values = (
+        data.get('transaction_ref'),
+        data.get('category_id'),
+        data.get('amount'),
+        data.get('fee', 0.0),
+        data.get('transaction_date', datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
+        data.get('raw_sms')
+    )
+    
+    try:
+        cursor.execute(sql, values)
+        conn.commit()
+        new_id = cursor.lastrowid
+        return jsonify({"message": "Transaction created", "id": new_id}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+    finally:
+        cursor.close()
+        conn.close()
+
+# 4. PUT /transactions/{id} -> Update an existing record
+@app.route('/transactions/<int:t_id>', methods=['PUT'])
+@auth.login_required
+def update_transaction(t_id):
+    data = request.get_json()
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    # Dynamically build the update query based on provided fields
+    fields = []
+    values = []
+    for key, value in data.items():
+        fields.append(f"{key} = %s")
+        values.append(value)
+    
+    if not fields:
+        return jsonify({"error": "No data provided"}), 400
+        
+    values.append(t_id)
+    sql = f"UPDATE transactions SET {', '.join(fields)} WHERE transaction_id = %s"
+    
+    cursor.execute(sql, values)
+    conn.commit()
+    
+    success = cursor.rowcount > 0
+    cursor.close()
+    conn.close()
+    
+    if success:
+        return jsonify({"message": "Transaction updated"}), 200
+    return jsonify({"error": "Transaction not found"}), 404
+
+# 5. DELETE /transactions/{id} -> Soft delete a record
+@app.route('/transactions/<int:t_id>', methods=['DELETE'])
+@auth.login_required
+def delete_transaction(t_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    # Following your SQL schema logic: Soft Delete
+    sql = """UPDATE transactions 
+             SET is_deleted = TRUE, deleted_at = CURRENT_TIMESTAMP 
+             WHERE transaction_id = %s"""
+    
+    cursor.execute(sql, (t_id,))
+    conn.commit()
+    
+    success = cursor.rowcount > 0
+    cursor.close()
+    conn.close()
+    
+    if success:
+        return jsonify({"message": "Transaction deleted (soft delete)"}), 200
+    return jsonify({"error": "Transaction not found"}), 404
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
