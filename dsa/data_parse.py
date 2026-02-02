@@ -7,7 +7,7 @@ from datetime import datetime
 # 1. Configuration & Constants
 XML_FILE = 'modified_sms_v2.xml'
 DB_CONFIG = {
-    'host': 'localhost',
+    'host': 'localhost ',
     'user': 'root',
     'password': 'Philosophy@360',
     'database': 'momo_sms_db'
